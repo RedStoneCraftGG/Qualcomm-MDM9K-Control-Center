@@ -22,10 +22,11 @@
                 BorderThickness="1"
                 CornerRadius="8">
                 <StackPanel Spacing="12">
-                    <FontIcon
-                        HorizontalAlignment="Center"
-                        FontSize="28"
-                        Glyph="&#xE946;" />
+                    <Image
+                        x:Name="AppLogoImage"
+                        Width="72"
+                        Height="72"
+                        HorizontalAlignment="Center" />
                     <TextBlock
                         HorizontalAlignment="Center"
                         FontSize="20"

@@ -1,6 +1,5 @@
 using System;
 using System.Runtime.InteropServices;
-using System.Text;
 
 namespace ModemController
 {
@@ -30,12 +29,18 @@ namespace ModemController
         private const uint ID_TRAY_OPEN = 1001;
         private const uint ID_TRAY_EXIT = 1002;
         private const int IDI_APPLICATION = 32512;
+        private const uint IMAGE_ICON = 1;
+        private const uint LR_LOADFROMFILE = 0x00000010;
+        private const uint LR_DEFAULTSIZE = 0x00000040;
+        private const int SM_CXSMICON = 49;
 
         private readonly Action _showAction;
         private readonly Action _exitAction;
         private readonly WndProc _wndProc;
         private readonly string _className;
         private IntPtr _messageWindow;
+        private IntPtr _hIcon;
+        private bool _ownsIcon;
         private bool _iconVisible;
         private bool _disposed;
         private bool _classRegistered;
@@ -46,6 +51,7 @@ namespace ModemController
             _exitAction = exitAction ?? throw new ArgumentNullException(nameof(exitAction));
             _wndProc = WindowProc;
             _className = WindowClassName + "_" + Environment.ProcessId;
+            _hIcon = LoadAppIcon();
 
             CreateMessageWindow();
             AddTrayIcon();
@@ -78,7 +84,7 @@ namespace ModemController
                 cbClsExtra = 0,
                 cbWndExtra = 0,
                 hInstance = hInstance,
-                hIcon = LoadIcon(IntPtr.Zero, (IntPtr)IDI_APPLICATION),
+                hIcon = _hIcon,
                 hCursor = IntPtr.Zero,
                 hbrBackground = IntPtr.Zero,
                 lpszMenuName = null,
@@ -153,7 +159,7 @@ namespace ModemController
                 uID = 1,
                 uFlags = flags,
                 uCallbackMessage = WM_TRAYICON,
-                hIcon = LoadIcon(IntPtr.Zero, (IntPtr)IDI_APPLICATION),
+                hIcon = _hIcon,
                 szTip = "Qualcomm MDM9K 4G Control Center"
             };
         }
@@ -237,6 +243,7 @@ namespace ModemController
             _disposed = true;
 
             RemoveTrayIcon();
+            DestroyLoadedIcon();
 
             if (_messageWindow != IntPtr.Zero)
             {
@@ -248,6 +255,39 @@ namespace ModemController
             {
                 UnregisterClass(_className, GetModuleHandle(null));
                 _classRegistered = false;
+            }
+        }
+
+        private IntPtr LoadAppIcon()
+        {
+            if (AppIcon.TryGetIcoPath(out string iconPath))
+            {
+                int size = GetSystemMetrics(SM_CXSMICON);
+                if (size <= 0)
+                    size = 16;
+
+                IntPtr loaded = LoadImage(IntPtr.Zero, iconPath, IMAGE_ICON, size, size, LR_LOADFROMFILE);
+                if (loaded == IntPtr.Zero)
+                    loaded = LoadImage(IntPtr.Zero, iconPath, IMAGE_ICON, 0, 0, LR_LOADFROMFILE | LR_DEFAULTSIZE);
+
+                if (loaded != IntPtr.Zero)
+                {
+                    _ownsIcon = true;
+                    return loaded;
+                }
+            }
+
+            _ownsIcon = false;
+            return LoadIcon(IntPtr.Zero, (IntPtr)IDI_APPLICATION);
+        }
+
+        private void DestroyLoadedIcon()
+        {
+            if (_ownsIcon && _hIcon != IntPtr.Zero)
+            {
+                DestroyIcon(_hIcon);
+                _hIcon = IntPtr.Zero;
+                _ownsIcon = false;
             }
         }
 
@@ -330,6 +370,15 @@ namespace ModemController
 
         [DllImport("user32.dll", CharSet = CharSet.Unicode)]
         private static extern IntPtr LoadIcon(IntPtr hInstance, IntPtr lpIconName);
+
+        [DllImport("user32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+        private static extern IntPtr LoadImage(IntPtr hInst, string lpszName, uint uType, int cx, int cy, uint fuLoad);
+
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern bool DestroyIcon(IntPtr hIcon);
+
+        [DllImport("user32.dll")]
+        private static extern int GetSystemMetrics(int nIndex);
 
         [DllImport("shell32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
         private static extern bool Shell_NotifyIcon(uint dwMessage, ref NOTIFYICONDATA lpData);

@@ -32,6 +32,7 @@ namespace ModemController
                 _appWindow.Resize(new Windows.Graphics.SizeInt32(440, 540));
                 _appWindow.Changed += AppWindow_Changed;
                 _appWindow.Closing += AppWindow_Closing;
+                ApplyWindowIcon();
 
                 if (_presenter != null)
                 {
@@ -44,6 +45,14 @@ namespace ModemController
 
             NavView.SelectedItem = NavDashboard;
             SmsMonitorService.Start();
+        }
+
+        private void ApplyWindowIcon()
+        {
+            if (_appWindow == null || !AppIcon.TryGetIcoPath(out string iconPath))
+                return;
+
+            _appWindow.SetIcon(iconPath);
         }
 
         private void AppWindow_Changed(AppWindow sender, AppWindowChangedEventArgs args)

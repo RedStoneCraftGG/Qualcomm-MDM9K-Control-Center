@@ -11,11 +11,15 @@ namespace ModemController
             try
             {
                 senderNumber = SmsTextDecoder.DecodeSender(senderNumber);
-                var notification = new AppNotificationBuilder()
+                var builder = new AppNotificationBuilder()
                     .AddArgument("action", "openSms")
                     .AddText($"New SMS from: {senderNumber}")
-                    .AddText(messageBody)
-                    .BuildNotification();
+                    .AddText(messageBody);
+
+                if (AppIcon.TryGetPngUri(out Uri logoUri))
+                    builder.SetAppLogoOverride(logoUri, AppNotificationImageCrop.Default);
+
+                var notification = builder.BuildNotification();
 
                 AppNotificationManager.Default.Show(notification);
             }

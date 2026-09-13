@@ -1,5 +1,6 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media.Imaging;
 using System;
 
 namespace ModemController
@@ -12,6 +13,9 @@ namespace ModemController
         {
             InitializeComponent();
             Loaded += AboutPage_Loaded;
+
+            if (AppIcon.TryGetPngUri(out Uri logoUri))
+                AppLogoImage.Source = new BitmapImage(logoUri);
         }
 
         private async void AboutPage_Loaded(object sender, RoutedEventArgs e)

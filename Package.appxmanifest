@@ -18,7 +18,7 @@
   <Properties>
     <DisplayName>ModemController</DisplayName>
     <PublisherDisplayName>RedStoneCraftGG</PublisherDisplayName>
-    <Logo>Assets\StoreLogo.png</Logo>
+    <Logo>Assets\AppIccon.png</Logo>
   </Properties>
 
   <Dependencies>
@@ -37,11 +37,11 @@
       <uap:VisualElements
         DisplayName="ModemController"
         Description="ModemController"
-        BackgroundColor="transparent"
-        Square150x150Logo="Assets\Square150x150Logo.png"
-        Square44x44Logo="Assets\Square44x44Logo.png">
-        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" />
-        <uap:SplashScreen Image="Assets\SplashScreen.png" />
+        BackgroundColor="#1E88E5"
+        Square150x150Logo="Assets\AppIccon.png"
+        Square44x44Logo="Assets\AppIccon.png">
+        <uap:DefaultTile Wide310x150Logo="Assets\AppIccon.png" />
+        <uap:SplashScreen Image="Assets\AppIccon.png" />
       </uap:VisualElements>
     </Application>
   </Applications>
