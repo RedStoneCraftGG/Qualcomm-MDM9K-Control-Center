@@ -1,4 +1,12 @@
-# QMC - Qualcomm MDM9K Control Center
+<p align="center">
+  <img width="256" height="256" alt="image" src="https://github.com/user-attachments/assets/bc8c8790-de7a-4277-82bb-c878f57e6a76" />
+</p>
+
+<h3 align="center">QMC - Qualcomm MDM9K Control Center</h3>
+<p align="center">An actual image of what device I used</p>
+
+<br>
+<br>
 
 A Windows application built with WinUI 3 and .NET 8 to monitor and control Qualcomm 4G modem status, manage Wi-Fi, RAS connectivity, and SMS through a serial (COM) interface using AT commands.
 
