@@ -1,0 +1,369 @@
+<Page
+    x:Class="ModemController.SmsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:ModemController"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <local:BoolToAlignmentConverter x:Key="ChatAlignConverter" />
+        <local:BoolToColorConverter x:Key="ChatBgConverter" />
+        <local:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <local:ListViewItemSelectionToColorConverter x:Key="SelectionColorConverter" />
+    </Page.Resources>
+
+    <Grid Padding="12,12,0,12" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+        <Grid x:Name="PanelInbox" Visibility="Visible">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" Margin="0,0,12,8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock
+                    VerticalAlignment="Center"
+                    FontWeight="Bold"
+                    Style="{StaticResource SubtitleTextBlockStyle}"
+                    Text="Inbox" />
+
+                <Button
+                    x:Name="BtnRefreshSms"
+                    Grid.Column="1"
+                    Margin="0,0,4,0"
+                    Padding="6"
+                    HorizontalAlignment="Right"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Click="BtnRefreshSms_Click"
+                    ToolTipService.ToolTip="Reload Messages">
+                    <FontIcon FontSize="14" Glyph="&#xE72C;" />
+                </Button>
+
+                <Button
+                    x:Name="BtnToggleDeleteMode"
+                    Grid.Column="2"
+                    Padding="6"
+                    HorizontalAlignment="Right"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Click="BtnToggleDeleteMode_Click"
+                    ToolTipService.ToolTip="Select Messages">
+                    <FontIcon FontSize="14" Glyph="&#xEA99;" />
+                </Button>
+
+                <Button
+                    x:Name="BtnNewMessage"
+                    Grid.Column="3"
+                    Padding="6"
+                    HorizontalAlignment="Right"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Click="BtnNewMessage_Click"
+                    ToolTipService.ToolTip="New Message">
+                    <FontIcon FontSize="14" Glyph="&#xE710;" />
+                </Button>
+            </Grid>
+
+            <ListView
+                x:Name="ListSmsBox"
+                Grid.Row="1"
+                SelectionChanged="ListSmsBox_SelectionChanged">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                        <Setter Property="Margin" Value="0,2,12,2" />
+                        <Setter Property="Padding" Value="0" />
+                        <Setter Property="Background" Value="Transparent" />
+
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ListViewItem">
+                                    <ListViewItemPresenter
+                                        PointerOverBackground="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                                        PressedBackground="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                                        SelectedBackground="#FF1E5078"
+                                        SelectedPointerOverBackground="#FF1E5078"
+                                        SelectedPressedBackground="#FF1E5078"
+                                        SelectionCheckMarkVisualEnabled="False" />
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListView.ItemContainerStyle>
+
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="local:SmsMessage">
+                        <Border
+                            Padding="10"
+                            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                            BorderThickness="1"
+                            CornerRadius="6">
+                            <StackPanel Spacing="4">
+                                <Grid>
+                                    <TextBlock
+                                        FontWeight="SemiBold"
+                                        Style="{StaticResource BodyStrongTextBlockStyle}"
+                                        Text="{x:Bind DisplayName}" />
+                                    <TextBlock
+                                        HorizontalAlignment="Right"
+                                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                        Style="{StaticResource CaptionTextBlockStyle}"
+                                        Text="{x:Bind Timestamp}" />
+                                </Grid>
+                                <TextBlock
+                                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                    MaxLines="2"
+                                    Style="{StaticResource BodyTextBlockStyle}"
+                                    Text="{x:Bind Content}"
+                                    TextWrapping="Wrap" />
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <StackPanel
+                x:Name="PanelDeleteActions"
+                Grid.Row="2"
+                Margin="0,8,12,0"
+                HorizontalAlignment="Center"
+                Orientation="Horizontal"
+                Spacing="16"
+                Visibility="Collapsed">
+                <Button
+                    x:Name="BtnClearSelection"
+                    Padding="8"
+                    Click="BtnClearSelection_Click"
+                    ToolTipService.ToolTip="Clear Selection">
+                    <FontIcon FontSize="14" Glyph="&#xE711;" />
+                </Button>
+
+                <Button
+                    x:Name="BtnSelectAll"
+                    Padding="8"
+                    Click="BtnSelectAll_Click"
+                    Style="{StaticResource AccentButtonStyle}"
+                    ToolTipService.ToolTip="Select All Messages">
+                    <FontIcon FontSize="14" Glyph="&#xE73A;" />
+                </Button>
+
+                <Button
+                    x:Name="BtnTrashAction"
+                    Padding="8"
+                    Click="BtnTrashAction_Click"
+                    ToolTipService.ToolTip="Delete Selected Messages">
+                    <FontIcon FontSize="14" Glyph="&#xE74D;" />
+                </Button>
+            </StackPanel>
+        </Grid>
+
+        <Grid x:Name="PanelNewMessage" Visibility="Collapsed">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" Margin="0,0,12,12">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Button
+                    x:Name="BtnBackFromNewMessage"
+                    Padding="6"
+                    VerticalAlignment="Center"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Click="BtnBackFromNewMessage_Click"
+                    ToolTipService.ToolTip="Back">
+                    <FontIcon FontSize="14" Glyph="&#xE72B;" />
+                </Button>
+
+                <TextBlock
+                    Grid.Column="1"
+                    Margin="8,0,0,0"
+                    VerticalAlignment="Center"
+                    FontWeight="Bold"
+                    Style="{StaticResource SubtitleTextBlockStyle}"
+                    Text="New Message" />
+            </Grid>
+
+            <TextBox
+                x:Name="TxtBoxNewRecipient"
+                Grid.Row="1"
+                Margin="0,0,12,12"
+                PlaceholderText="Phone number or short code"
+                InputScope="TelephoneNumber" />
+
+            <TextBox
+                x:Name="TxtBoxNewMessage"
+                Grid.Row="2"
+                Margin="0,0,12,8"
+                AcceptsReturn="False"
+                VerticalAlignment="Stretch"
+                KeyDown="TxtBoxNewMessage_KeyDown"
+                PlaceholderText="Type a message..."
+                TextWrapping="Wrap" />
+
+            <Button
+                x:Name="BtnSendNewMessage"
+                Grid.Row="3"
+                Margin="0,0,12,0"
+                HorizontalAlignment="Right"
+                Padding="10"
+                Click="BtnSendNewMessage_Click"
+                Style="{StaticResource AccentButtonStyle}"
+                ToolTipService.ToolTip="Send Message">
+                <FontIcon FontSize="14" Glyph="&#xE725;" />
+            </Button>
+        </Grid>
+
+        <Grid x:Name="PanelChatDetail" Visibility="Collapsed">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" Margin="0,0,12,8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <Button
+                    x:Name="BtnBackToInbox"
+                    Padding="6"
+                    VerticalAlignment="Center"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Click="BtnBackToInbox_Click"
+                    ToolTipService.ToolTip="Kembali">
+                    <FontIcon FontSize="14" Glyph="&#xE72B;" />
+                </Button>
+
+                <StackPanel Grid.Column="1" Margin="8,0,0,0" VerticalAlignment="Center">
+                    <TextBlock
+                        x:Name="TxtChatTitle"
+                        FontWeight="Bold"
+                        Style="{StaticResource SubtitleTextBlockStyle}"
+                        Text="Sender" />
+                    <TextBlock
+                        x:Name="TxtChatAddress"
+                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                        Style="{StaticResource CaptionTextBlockStyle}"
+                        Text="" />
+                </StackPanel>
+
+                <Button
+                    x:Name="BtnEditContact"
+                    Grid.Column="2"
+                    Padding="6"
+                    HorizontalAlignment="Right"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Click="BtnEditContact_Click"
+                    ToolTipService.ToolTip="Add or Edit Contact">
+                    <FontIcon FontSize="14" Glyph="&#xE77B;" />
+                </Button>
+            </Grid>
+
+            <ListView
+                x:Name="ListChatHistory"
+                Grid.Row="1"
+                Margin="0,0,0,8"
+                SelectionMode="None">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                        <Setter Property="Margin" Value="0,4,12,4" />
+                        <Setter Property="Padding" Value="0" />
+                    </Style>
+                </ListView.ItemContainerStyle>
+
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="local:ChatBubble">
+                        <Grid>
+                            <Border
+                                MaxWidth="260"
+                                Padding="10"
+                                HorizontalAlignment="{x:Bind IsIncoming, Converter={StaticResource ChatAlignConverter}}"
+                                Background="{x:Bind IsIncoming, Converter={StaticResource ChatBgConverter}}"
+                                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                                BorderThickness="1"
+                                CornerRadius="8">
+                                <StackPanel Spacing="2">
+                                    <TextBlock
+                                        Style="{StaticResource BodyTextBlockStyle}"
+                                        Text="{x:Bind Text}"
+                                        TextWrapping="Wrap" />
+                                    <StackPanel
+                                        HorizontalAlignment="Right"
+                                        Orientation="Horizontal"
+                                        Spacing="4">
+                                        <FontIcon
+                                            FontSize="12"
+                                            Foreground="{ThemeResource SystemFillColorCriticalBrush}"
+                                            Glyph="&#xF13C;"
+                                            ToolTipService.ToolTip="SMS failed to send"
+                                            Visibility="{x:Bind IsFailed, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}" />
+                                        <TextBlock
+                                            FontSize="10"
+                                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                            Style="{StaticResource CaptionTextBlockStyle}"
+                                            Text="{x:Bind Timestamp}" />
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <Grid Grid.Row="2" Margin="0,0,12,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <TextBox
+                    x:Name="TxtBoxReply"
+                    MaxHeight="250"
+                    Margin="0,0,8,0"
+                    VerticalAlignment="Bottom"
+                    AcceptsReturn="False"
+                    KeyDown="TxtBoxReply_KeyDown"
+                    PlaceholderText="Type a message..."
+                    TextWrapping="Wrap" />
+
+                <Button
+                    x:Name="BtnSendSmsGlyph"
+                    Grid.Column="1"
+                    Padding="10"
+                    VerticalAlignment="Bottom"
+                    Click="BtnSendSmsGlyph_Click"
+                    Style="{StaticResource AccentButtonStyle}"
+                    ToolTipService.ToolTip="Send Message">
+                    <FontIcon FontSize="14" Glyph="&#xE725;" />
+                </Button>
+            </Grid>
+        </Grid>
+
+    </Grid>
+</Page>

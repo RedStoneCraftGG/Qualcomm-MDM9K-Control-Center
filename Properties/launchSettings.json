@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "ModemController (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "ModemController (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

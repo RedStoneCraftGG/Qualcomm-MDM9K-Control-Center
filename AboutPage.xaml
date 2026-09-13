@@ -1,0 +1,91 @@
+<Page
+    x:Class="ModemController.AboutPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Padding="16" Spacing="12">
+            <StackPanel Spacing="2">
+                <TextBlock FontSize="28" FontWeight="Bold" Text="About" />
+                <TextBlock
+                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                    Text="Qualcomm MDM9K 4G Control Center" />
+            </StackPanel>
+
+            <Border
+                Padding="20"
+                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                BorderThickness="1"
+                CornerRadius="8">
+                <StackPanel Spacing="12">
+                    <FontIcon
+                        HorizontalAlignment="Center"
+                        FontSize="28"
+                        Glyph="&#xE946;" />
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        FontSize="20"
+                        FontWeight="SemiBold"
+                        Text="MDM9K Control Center"
+                        TextAlignment="Center"
+                        TextWrapping="WrapWholeWords" />
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                        Text="A lightweight Windows control center for Qualcomm MDM9K-based cellular modems."
+                        TextAlignment="Center"
+                        TextWrapping="WrapWholeWords" />
+                </StackPanel>
+            </Border>
+
+            <Border
+                Padding="12"
+                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                BorderThickness="1"
+                CornerRadius="8">
+                <StackPanel Spacing="8">
+                    <TextBlock FontWeight="SemiBold" Text="Detected Hardware" />
+                    <Grid ColumnSpacing="12" RowSpacing="6">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0" Text="Manufacturer" />
+                        <TextBlock x:Name="TxtManufacturer" Grid.Row="0" Grid.Column="1" Text="Detecting..." TextWrapping="Wrap" />
+                        <TextBlock Grid.Row="1" Text="Platform" />
+                        <TextBlock x:Name="TxtPlatform" Grid.Row="1" Grid.Column="1" Text="Detecting..." TextWrapping="Wrap" />
+                        <TextBlock Grid.Row="2" Text="Model" />
+                        <TextBlock x:Name="TxtModel" Grid.Row="2" Grid.Column="1" Text="Detecting..." TextWrapping="Wrap" />
+                        <TextBlock Grid.Row="3" Text="Hardware" />
+                        <TextBlock x:Name="TxtHardware" Grid.Row="3" Grid.Column="1" Text="Detecting..." TextWrapping="Wrap" />
+                        <TextBlock Grid.Row="4" Text="Firmware" />
+                        <TextBlock x:Name="TxtFirmware" Grid.Row="4" Grid.Column="1" Text="Detecting..." TextWrapping="Wrap" />
+                    </Grid>
+                    <TextBlock
+                        x:Name="TxtIdentityStatus"
+                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                        Text="Reading modem identity..."
+                        TextWrapping="Wrap" />
+                </StackPanel>
+            </Border>
+
+            <TextBlock
+                HorizontalAlignment="Center"
+                Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                Text="Built with WinUI 3 and .NET" />
+        </StackPanel>
+    </ScrollViewer>
+</Page>

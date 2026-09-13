@@ -1,0 +1,81 @@
+# Build results
+bin/
+obj/
+[Bb]in/
+[Oo]bj/
+AppPackages/
+[Oo]utput/
+
+# User-specific files
+*.user
+*.userosscache
+*.suo
+*.userprefs
+*.sln.docstates
+
+# MonoDevelop
+*.userprefs
+
+# VS Code
+.vscode/
+
+# VS for Windows
+.vs/
+.vsconfig
+
+# Rider
+.idea/
+
+# Cache files
+*.cache
+
+# Auto-generated files
+Generated Files/
+*.dbmdl
+*.pdb
+*.mdb
+*.opendb
+*.VC.VC.opendb
+
+# Visual Studio profiler
+*.psess
+*.vsp
+*.vspx
+*.sap
+
+# NuGet packages
+*.nupkg
+packages/
+# The packages folder can be ignored because of Package Restore
+**/packages/*
+
+# Windows image file caches
+*.vsix
+*.msi
+*.msm
+*.msp
+
+# DotCover
+*.dotCover
+
+# StyleCop
+StyleCopReport.xml
+
+# Files built by Visual Studio
+*.Build.Caches/
+ipch/
+*.tlog
+*.log
+
+# Local history for Visual Studio
+.localhistory/
+
+# VS Backup files
+*.[Cc]ache
+_ReSharper.Caches/
+
+# Others
+_TestResults/
+*.Publish.xml
+# End of Selection
+.env

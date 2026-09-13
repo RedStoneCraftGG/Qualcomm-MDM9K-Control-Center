@@ -1,0 +1,82 @@
+<Page
+    x:Class="ModemController.ContactsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:ModemController"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Padding="12,12,0,12" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Margin="0,0,12,8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBlock
+                VerticalAlignment="Center"
+                FontWeight="Bold"
+                Style="{StaticResource SubtitleTextBlockStyle}"
+                Text="Contacts" />
+            <Button
+                x:Name="BtnAddContact"
+                Grid.Column="1"
+                Padding="6"
+                Background="Transparent"
+                BorderThickness="0"
+                Click="BtnAddContact_Click"
+                ToolTipService.ToolTip="Add Contact">
+                <FontIcon FontSize="14" Glyph="&#xE710;" />
+            </Button>
+        </Grid>
+
+        <ListView
+            x:Name="ListContacts"
+            Grid.Row="1"
+            SelectionMode="None"
+            IsItemClickEnabled="True"
+            ItemClick="ListContacts_ItemClick">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                    <Setter Property="Margin" Value="0,2,12,2" />
+                    <Setter Property="Padding" Value="0" />
+                </Style>
+            </ListView.ItemContainerStyle>
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="local:Contact">
+                    <Border
+                        Padding="10"
+                        Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                        BorderThickness="1"
+                        CornerRadius="6">
+                        <Grid>
+                            <StackPanel Spacing="2">
+                                <TextBlock
+                                    FontWeight="SemiBold"
+                                    Style="{StaticResource BodyStrongTextBlockStyle}"
+                                    Text="{x:Bind DisplayName}" />
+                                <TextBlock
+                                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                    Style="{StaticResource CaptionTextBlockStyle}"
+                                    Text="{x:Bind Address}" />
+                            </StackPanel>
+                            <FontIcon
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                FontSize="14"
+                                Glyph="&#xE76C;"
+                                Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</Page>

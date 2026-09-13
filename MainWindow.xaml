@@ -1,0 +1,76 @@
+<Window
+    x:Class="ModemWidgetApp.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:ModemWidgetApp"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="Qualcomm MDM9K 4G Control Center"
+    mc:Ignorable="d">
+
+    <Grid>
+        <NavigationView
+            x:Name="NavView"
+            CompactPaneLength="48"
+            IsBackButtonVisible="Collapsed"
+            IsBackEnabled="False"
+            IsSettingsVisible="False"
+            OpenPaneLength="160"
+            PaneDisplayMode="LeftCompact"
+            PaneTitle="Navigation"
+            SelectionChanged="NavView_SelectionChanged">
+
+            <NavigationView.MenuItems>
+                <NavigationViewItem
+                    x:Name="NavDashboard"
+                    Content="Modem"
+                    Tag="dashboard">
+                    <NavigationViewItem.Icon>
+                        <SymbolIcon Symbol="Globe" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+
+                <NavigationViewItem
+                    x:Name="NavSms"
+                    Content="SMS"
+                    Tag="sms">
+                    <NavigationViewItem.Icon>
+                        <SymbolIcon Symbol="Message" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+
+                <NavigationViewItem
+                    x:Name="NavContacts"
+                    Content="Contacts"
+                    Tag="contacts">
+                    <NavigationViewItem.Icon>
+                        <SymbolIcon Symbol="Contact" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+
+                <NavigationViewItemSeparator />
+
+                <NavigationViewItem
+                    x:Name="NavSettings"
+                    Content="Settings"
+                    Tag="settings">
+                    <NavigationViewItem.Icon>
+                        <SymbolIcon Symbol="Setting" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+
+                <NavigationViewItem
+                    x:Name="NavAbout"
+                    Content="About"
+                    Tag="about">
+                    <NavigationViewItem.Icon>
+                        <SymbolIcon Symbol="Help" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+            </NavigationView.MenuItems>
+
+            <Frame x:Name="ContentFrame" />
+
+        </NavigationView>
+    </Grid>
+</Window>
