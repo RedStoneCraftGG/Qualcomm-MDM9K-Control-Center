@@ -20,11 +20,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="DashboardPage.xaml" />
-    <None Remove="SmsPage.xaml" />
-    <None Remove="AboutPage.xaml" />
-    <None Remove="SettingsPage.xaml" />
-    <None Remove="ContactsPage.xaml" />
+    <None Remove="Views\DashboardPage.xaml" />
+    <None Remove="Views\SmsPage.xaml" />
+    <None Remove="Views\AboutPage.xaml" />
+    <None Remove="Views\SettingsPage.xaml" />
+    <None Remove="Views\ContactsPage.xaml" />
   </ItemGroup>
 
   <!-- App Assets -->
@@ -51,21 +51,21 @@
     <PackageReference Include="Microsoft.Data.Sqlite" Version="8.0.8" />
   </ItemGroup>
   <ItemGroup>
-    <Page Update="DashboardPage.xaml">
+    <Page Update="Views\DashboardPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="SmsPage.xaml">
+    <Page Update="Views\SmsPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Update="AboutPage.xaml">
+    <Page Update="Views\AboutPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Update="SettingsPage.xaml">
+    <Page Update="Views\SettingsPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Update="ContactsPage.xaml">
+    <Page Update="Views\ContactsPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>

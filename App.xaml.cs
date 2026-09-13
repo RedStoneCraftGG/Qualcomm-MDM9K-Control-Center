@@ -5,7 +5,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ModemWidgetApp
+namespace ModemController
 {
     public partial class App : Application
     {
@@ -70,7 +70,7 @@ namespace ModemWidgetApp
                     if (string.IsNullOrWhiteSpace(reply))
                         return;
 
-                    bool sent = await ModemController.ModemAtService.Instance
+                    bool sent = await ModemAtService.Instance
                         .SendSmsAsync(targetNumber, reply);
 
                     System.Diagnostics.Debug.WriteLine(

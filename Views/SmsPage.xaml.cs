@@ -342,7 +342,7 @@ namespace ModemController
             if (string.IsNullOrWhiteSpace(_currentRecipient))
                 return;
 
-            if (ModemWidgetApp.App.Current is ModemWidgetApp.App app)
+            if (App.Current is App app)
             {
                 app.NavigateToContacts(_currentRecipient);
             }

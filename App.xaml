@@ -1,8 +1,8 @@
 <Application
-    x:Class="ModemWidgetApp.App"
+    x:Class="ModemController.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:ModemWidgetApp">
+    xmlns:local="using:ModemController">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

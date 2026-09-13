@@ -6,13 +6,13 @@ using System;
 using System.Runtime.InteropServices;
 using WinRT.Interop;
 
-namespace ModemWidgetApp
+namespace ModemController
 {
     public sealed partial class MainWindow : Window
     {
         private readonly AppWindow? _appWindow;
         private readonly OverlappedPresenter? _presenter;
-        private readonly ModemController.TrayService _trayService;
+        private readonly TrayService _trayService;
         private readonly IntPtr _hwnd;
         private bool _allowClose;
         private bool _hiddenToTray;
@@ -40,16 +40,16 @@ namespace ModemWidgetApp
                 }
             }
 
-            _trayService = new ModemController.TrayService(ShowFromTray, ExitApplication);
+            _trayService = new TrayService(ShowFromTray, ExitApplication);
 
             NavView.SelectedItem = NavDashboard;
-            ModemController.SmsMonitorService.Start();
+            SmsMonitorService.Start();
         }
 
         private void AppWindow_Changed(AppWindow sender, AppWindowChangedEventArgs args)
         {
             if (!_hiddenToTray &&
-                ModemController.AppSettings.Current.MinimizeToTray &&
+                AppSettings.Current.MinimizeToTray &&
                 _presenter?.State == OverlappedPresenterState.Minimized)
             {
                 HideToTray();
@@ -61,7 +61,7 @@ namespace ModemWidgetApp
             if (_allowClose)
                 return;
 
-            if (ModemController.AppSettings.Current.CloseToTray)
+            if (AppSettings.Current.CloseToTray)
             {
                 args.Cancel = true;
                 HideToTray();
@@ -91,7 +91,7 @@ namespace ModemWidgetApp
 
         public void ApplyStartupVisibility(bool startupLaunch)
         {
-            if (startupLaunch && ModemController.AppSettings.Current.MinimizeToTray)
+            if (startupLaunch && AppSettings.Current.MinimizeToTray)
                 HideToTray();
         }
 
@@ -100,13 +100,13 @@ namespace ModemWidgetApp
             _allowClose = true;
             _trayService.Hide();
             _trayService.Dispose();
-            ModemController.SmsMonitorService.Stop();
+            SmsMonitorService.Stop();
             _appWindow?.Destroy();
         }
 
         private void MainWindow_Closed(object sender, WindowEventArgs args)
         {
-            ModemController.SmsMonitorService.Stop();
+            SmsMonitorService.Stop();
             _trayService.Dispose();
         }
 
@@ -117,7 +117,7 @@ namespace ModemWidgetApp
             // changes the content but leaves the SMS item selected, which makes
             // the navigation UI appear stuck on SMS.
             NavView.SelectedItem = NavContacts;
-            ContentFrame.Navigate(typeof(ModemController.ContactsPage), address);
+            ContentFrame.Navigate(typeof(ContactsPage), address);
         }
 
         private void NavView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
@@ -132,19 +132,19 @@ namespace ModemWidgetApp
             switch (pageTag)
             {
                 case "dashboard":
-                    ContentFrame.Navigate(typeof(ModemController.DashboardPage));
+                    ContentFrame.Navigate(typeof(DashboardPage));
                     break;
                 case "sms":
-                    ContentFrame.Navigate(typeof(ModemController.SmsPage));
+                    ContentFrame.Navigate(typeof(SmsPage));
                     break;
                 case "contacts":
-                    ContentFrame.Navigate(typeof(ModemController.ContactsPage));
+                    ContentFrame.Navigate(typeof(ContactsPage));
                     break;
                 case "settings":
-                    ContentFrame.Navigate(typeof(ModemController.SettingsPage));
+                    ContentFrame.Navigate(typeof(SettingsPage));
                     break;
                 case "about":
-                    ContentFrame.Navigate(typeof(ModemController.AboutPage));
+                    ContentFrame.Navigate(typeof(AboutPage));
                     break;
             }
         }
